@@ -49,11 +49,10 @@ if response.status_code == 200:
 
     if status_code == 0:
         for _, i in data['data'].items():
-
             token = CryptoToken(
-                id_=int(i['id']),
-                name=str(i['name']),
-                slug = str(i['slug']),
+                id_=i['id'],
+                name=i['name'],
+                slug = i['slug'],
                 price_by_USD=i['quote']['USD']['price']
                 )
             print(token)
