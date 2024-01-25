@@ -19,14 +19,11 @@ engine = create_engine(
     url=settings.DATABASE_URL_asyncpg
 )
 
-print(settings.GET_KEYS)
-
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=settings.GET_KEYS['BOT_KEY'])
 dp = Dispatcher()
 
 tokens = ['Bitcoin', 'Ethereum', 'Tether USDt', 'BNB', 'Solana', 'XRP', 'USDC', 'Cardano', 'Dogecoin', 'Avalanche', 'TRON', 'Chainlink', 'Polkadot', 'Toncoin', 'Polygon', 'Dai', 'Shiba Inu', 'Litecoin', 'Internet Computer', 'Bitcoin Cash']
-
 
 
 @dp.message(Command("start"))
