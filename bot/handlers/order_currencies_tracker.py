@@ -7,41 +7,99 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.types import ReplyKeyboardRemove,ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from dataclasses import dataclass
 
 from kbs.make_keyboard import make_keyboard
 
 router = Router()
 
 currencies = ['Bitcoin', 'Ethereum', 'Tether USDt', 'BNB', 'Solana', 'XRP', 'USDC', 'Cardano', 'Dogecoin', 'Avalanche', 'TRON', 'Chainlink', 'Polkadot', 'Toncoin', 'Polygon', 'Dai', 'Shiba Inu', 'Litecoin', 'Internet Computer', 'Bitcoin Cash']
+times = ['12AM 🌞', '12PM 🌑']
+confirmations = ['Confirm', 'I do not confirm']
 
-class TrackingOrder(StatesGroup):
-    choosing_currencies = State()
-    choosing_time = State()
+class OrderTracking(StatesGroup):
+    currencies_choosed = State()
+    time_choosed = State()
+    user_has_confirmed = State()
 
 
-@router.message(StateFilter(None), F.text=='Go!')
-async def cmd_currencies(message: types.Message, state: FSMContext):
+
+@router.message(StateFilter(None), F.text=='go')
+async def order_start(message: types.Message, state: FSMContext):
     await message.answer(
         text='Which currencies you want to tracking?', 
         reply_markup=make_keyboard(currencies))
-    await state.set_state(TrackingOrder.choosing_currencies)
+    await state.set_state(OrderTracking.currencies_choosed)
 
 
 @router.message(
-    TrackingOrder.choosing_currencies,
+    OrderTracking.currencies_choosed,
     F.text.in_(currencies)
 )
-async def currencies_chosen(message: Message, state: FSMContext):
+async def time_choosing(message: Message, state: FSMContext):
     await state.update_data(choosen_currencies=message.text)
-    await message.reply('')
+    await message.answer(
+        text='At what time?',
+        reply_markup=make_keyboard(times)
+    )
+    await state.set_state(OrderTracking.time_choosed)
 
 
-    await state.set_state(TrackingOrder.choosing_time)
+@router.message(
+    OrderTracking.time_choosed,
+    F.text.in_(times)
+)
+async def confirming(message: Message, state: FSMContext):
+    await state.update_data(time=message.text)
+    await message.answer(
+        text='Do you confirm?',
+        reply_markup=make_keyboard(confirmations)
+    )
+    await state.set_state(OrderTracking.user_has_confirmed)
 
 
-@router.message(TrackingOrder.choosing_currencies, F.text.in_(currencies))
-async def final(message: Message, state: FSMContext):
-    data = await state.get_data()
-    await message.answer(text=f'{message.text} {data["choosen_currencies"]}')
+
+
+@router.message(OrderTracking.user_has_confirmed, F.text.in_(confirmations))
+async def confirmation_of_data(message: Message, state: FSMContext):
+    await state.update_data(confirm=message.text)
+   
+    @dataclass
+    class UserOrder:
+        currency: str 
+        time_: str 
+        confirm: bool 
 
     
+    data = await state.get_data()
+
+    user_order = UserOrder(
+        currency=data['choosen_currencies'],
+        time_=''.join([i for i in data['time'] if i.isdigit() or i.isalpha()]),
+        confirm=True if data['confirm'] == 'Confirm' else False
+    )
+
+    print(user_order)
+
+    if user_order.confirm:
+        await message.answer(
+        text=f"""
+    You choosed: \n
+    Currency: {user_order.currency}\n 
+    Time: {user_order.time_}"""
+    )
+
+        await state.clear()
+    else:
+        await message.answer(
+        text=f"Sorry, your order not created!",
+        reply_markup=make_keyboard())
+
+
+            
+@router.message(StateFilter(None), Command('clear'))
+async def clear_states(message: types.Message, state: FSMContext):
+    await message.answer(
+        text='All was remove!',
+        reply_markup=make_keyboard(['go', 'help']))
+    await state.clear()  
