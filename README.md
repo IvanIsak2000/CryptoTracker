@@ -17,11 +17,8 @@
 3. Setting a date for the bot to send you data in messages.
 ###
 
-
-## Available cryptocurrencies
-
 <details>
-  <summary>Open</summary>
+  <summary><h2>Available cryptocurrencies</h2></summary>
   
   ```
   Bitcoin
@@ -47,4 +44,26 @@
  # It will be added on request
   ```
 </details>
+
+
+<details>
+ <summary><h2>For developers</h2></summary>
+ 
+ If you want to create own bot you need follow that steps:
+ 
+ 1. Create `.env`
+ 2. Fill data:
+    
+  ```
+  KEY=""
+  BOT_KEY=""
+  DB_PORT=""
+  DB_HOST=""
+  DB_USER=""
+  DB_NAME=""
+  DB_PASS=""
+  ```
+
+</details>
+
 
