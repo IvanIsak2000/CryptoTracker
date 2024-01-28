@@ -7,13 +7,17 @@ from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 from config import settings
 import asyncio
 from aiogram import Bot, Dispatcher
-from handlers import start, order_currencies_tracker
+
+from handlers import order_currencies_tracker, menu_buttons
 
 async def main():
     bot = Bot(token=settings.GET_KEYS['BOT_KEY'])
     dp = Dispatcher()
+    logging.basicConfig(level=logging.INFO)
 
-    dp.include_routers(start.router, order_currencies_tracker.router)
+    dp.include_routers(
+        order_currencies_tracker.router,
+        menu_buttons.router)
 
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
@@ -21,7 +25,6 @@ async def main():
     engine = create_engine(
         url=settings.DATABASE_URL_asyncpg
     )
-    loging.basicConfig(level=logging.INFO)
 
 # сделать:
 # 1. пользователь выбирает валюты
