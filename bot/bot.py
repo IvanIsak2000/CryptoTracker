@@ -25,13 +25,6 @@ async def main():
     engine = create_engine(
         url=settings.DATABASE_URL_asyncpg
     )
-
-# сделать:
-# 1. пользователь выбирает валюты
-# 2. подтверждает выбор
-# 3. данные идут в бд как ['user_name', 'user_id', 'requests', 'request_time']
-# 4. бот пробегается по базе данных и парсит данные, и отправляет значение валюты пользователю по расписанию
-
-
+    
 if __name__ == "__main__":
     asyncio.run(main())
