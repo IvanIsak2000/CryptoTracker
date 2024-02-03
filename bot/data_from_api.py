@@ -1,5 +1,4 @@
 from requests import Request, Session
-from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 from typing import Optional
 from sqlmodel import SQLModel
@@ -9,8 +8,6 @@ from dotenv import load_dotenv
 load_dotenv()
 KEY = os.environ.get('KEY')
 
-
-
 class CryptoToken(SQLModel):
     id_: int
     name: str 
@@ -19,8 +16,6 @@ class CryptoToken(SQLModel):
  
 token_id = 1 #USD
 
-
-#последние котировки
 url ='https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 parameters = {
     'id':token_id,  
