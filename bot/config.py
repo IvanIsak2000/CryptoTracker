@@ -12,8 +12,14 @@ class Settings(BaseSettings):
 
     @property
     def DATABASE_URL_asyncpg(self):
+        # postgresql+asyncpg://postgres:postgres@localhost:5432/sa
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
     
+    @property
+    def DATABASE_URL_psycopg(self):
+        # postgresql+asyncpg://postgres:postgres@localhost:5432/sa
+        return f"postgresql+psycopg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+
     @property
     def GET_KEYS(self):
         return {'KEY':self.KEY, 'BOT_KEY':self.BOT_KEY}
