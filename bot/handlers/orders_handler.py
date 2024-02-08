@@ -4,24 +4,29 @@ from aiogram import types
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from kbs.make_keyboard import make_keyboard
+from handlers.constants import WELCOME_TEXT
 from handlers.constants import START_BUTTONS
-from model import get_orders
+from handlers.constants import MODERATORS
+from model import get_orders, remove_orders
 
 router = Router()
 
 
 __all__ = [
-    'clear',
     'orders',
     'remove'
 ]
 
-@router.message(StateFilter(None), Command('clear'))
-async def clear_states(message: types.Message, state: FSMContext):
+
+@router.message(Command("start"))
+async def start(message: types.Message):
+    await message.answer(WELCOME_TEXT, reply_markup=make_keyboard(START_BUTTONS))
+
+  
+@router.message(Command('help'))
+async def help(message: types.Message):
     await message.answer(
-        text='Current orser was clear!',
-        reply_markup=make_keyboard(START_BUTTONS))
-    await state.clear() 
+        text='\n'.join([i for i in MODERATORS]))
 
 
 @router.message(StateFilter(None), Command('orders'))
@@ -31,4 +36,6 @@ async def get_orders_from_db(message: types.Message, state: FSMContext):
 
 @router.message(StateFilter(None), Command('remove'))
 async def get_orders_from_db(message: types.Message, state: FSMContext):
-    await message.answer(text=str(get_orders(public_name=message.chat.id)))
+    remove_orders(public_name=message.chat.id)
+    await message.answer(text='Your orders was removed!',
+        reply_markup=make_keyboard(START_BUTTONS))
