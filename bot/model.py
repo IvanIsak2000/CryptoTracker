@@ -1,6 +1,6 @@
 from typing import List
 from typing import Optional
-from sqlalchemy import ForeignKey, MetaData, select, String, BigInteger, Table
+from sqlalchemy import select, String, BigInteger, Table, delete
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
@@ -47,3 +47,9 @@ def get_orders(public_name):
             orders.append({'Currency': i.OrderTask.currency, 'Time': time_})
     return orders
 
+
+def remove_orders(public_name) -> str:
+    with Session(sync_engine) as session:
+        stmt = delete(OrderTask).where(OrderTask.public_name==public_name)
+        session.execute(stmt)
+        session.commit()
