@@ -1,10 +1,7 @@
-from typing import List
-from typing import Optional
-from sqlalchemy import select, String, BigInteger, Table, delete
+from sqlalchemy import select, String, BigInteger, delete
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm import sessionmaker, declarative_base, Session
+from sqlalchemy.orm import declarative_base, Session
 from sqlalchemy import create_engine
 
 from config import settings

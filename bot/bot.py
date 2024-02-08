@@ -4,7 +4,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 
 from handlers import new_order 
-from handlers import orders_handler
+from handlers import main_handler
 
 
 async def main():
@@ -15,7 +15,7 @@ async def main():
 
     dp.include_routers(
         new_order.router,
-        orders_handler.router)
+        main_handler.router)
 
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)

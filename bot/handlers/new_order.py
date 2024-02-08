@@ -1,17 +1,15 @@
 from aiogram import Router, F
 from aiogram import types
-
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, ReplyKeyboardRemove
-from aiogram.types import ReplyKeyboardRemove,ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.types import ReplyKeyboardRemove
 from dataclasses import dataclass
-from sqlalchemy import select
 
 from kbs.make_keyboard import make_keyboard
 from model import new_order
+
 from handlers.constants import SUPPORTED_CURRENCIES
 from handlers.constants import DAY_MODES
 from handlers.constants import CONSENT
@@ -98,13 +96,3 @@ async def confirmation_of_data(message: Message, state: FSMContext):
         await message.answer(
         text=f"Sorry, your order not created! Please try again!",
         reply_markup=make_keyboard(START_BUTTONS))
-
-
-
-@router.message(Command('clear'))
-async def clear_states(message: types.Message, state: FSMContext):
-    await state.clear() 
-    await message.answer(
-        text=ORDER_WAS_CLEAR_TEXT,
-        reply_markup=make_keyboard(START_BUTTONS))
-    
