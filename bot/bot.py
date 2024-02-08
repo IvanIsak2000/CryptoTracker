@@ -3,7 +3,6 @@ from config import settings
 import asyncio
 from aiogram import Bot, Dispatcher
 
-from handlers import start
 from handlers import new_order 
 from handlers import orders_handler
 
@@ -16,7 +15,6 @@ async def main():
 
     dp.include_routers(
         new_order.router,
-        start.router,
         orders_handler.router)
 
     await bot.delete_webhook(drop_pending_updates=True)
