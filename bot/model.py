@@ -4,7 +4,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import declarative_base, Session
 from sqlalchemy import create_engine
 
-from config import settings
+from config import DSN
 
 Base = declarative_base()
 
@@ -20,7 +20,7 @@ class OrderTask(Base):
     def __repr__(self) -> str:
         return f"OrderTask(id={self.id!r}, username={self.username!r}, currency={self.currency!r},public_name ={self.public_name!r}, time_is_AM={self.time_is_AM!r})"
     
-sync_engine = create_engine(settings.DATABASE_URL_psycopg)
+sync_engine = create_engine(DSN)
 # OrderTask.__table__.drop(sync_engine)
 # OrderTask.__table__.create(sync_engine)
 

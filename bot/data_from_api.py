@@ -33,9 +33,9 @@ response = session.get(url, params=parameters)
 
 if response.status_code == 200:
     data = json.loads(response.text)
-    status_code = data['status']['error_code']
+    api_status_code = data['status']['error_code']
 
-    if status_code == 0:
+    if api_status_code == 0:
         for _, i in data['data'].items():
             token = CryptoToken(
                 id_=i['id'],
@@ -46,6 +46,6 @@ if response.status_code == 200:
             print(token)
 
     else:
-        print(f'{status_code}: {data["status"]["error_message"]}')
+        return {api_status_code: data["status"]["error_message"]}
 else:
-    print(response.text)
+    return response.text
