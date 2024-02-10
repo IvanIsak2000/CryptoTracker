@@ -1,5 +1,4 @@
 from requests import Request, Session
-from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 from typing import Optional
 from sqlmodel import SQLModel
@@ -9,8 +8,6 @@ from dotenv import load_dotenv
 load_dotenv()
 KEY = os.environ.get('KEY')
 
-
-
 class CryptoToken(SQLModel):
     id_: int
     name: str 
@@ -19,8 +16,6 @@ class CryptoToken(SQLModel):
  
 token_id = 1 #USD
 
-
-#последние котировки
 url ='https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 parameters = {
     'id':token_id,  
@@ -38,9 +33,9 @@ response = session.get(url, params=parameters)
 
 if response.status_code == 200:
     data = json.loads(response.text)
-    status_code = data['status']['error_code']
+    api_status_code = data['status']['error_code']
 
-    if status_code == 0:
+    if api_status_code == 0:
         for _, i in data['data'].items():
             token = CryptoToken(
                 id_=i['id'],
@@ -51,6 +46,6 @@ if response.status_code == 200:
             print(token)
 
     else:
-        print(f'{status_code}: {data["status"]["error_message"]}')
+        return {api_status_code: data["status"]["error_message"]}
 else:
-    print(response.text)
+    return response.text
