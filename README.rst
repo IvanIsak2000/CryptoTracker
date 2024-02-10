@@ -2,8 +2,8 @@
 CryptoTracker
 =============
 
-
-------------------------------------------------------------------------------------------------
+About
+----------
 It's an open source and free bot for tracking popular cryptocurrencies from the `Coinmarketcap`_
 
 
