@@ -21,4 +21,10 @@ async def main():
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        from model import create_new_table
+        create_new_table()
+        print('база данных была создана')
+        asyncio.run(main())
+    except Exception as e:
+        print(e)
