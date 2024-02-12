@@ -22,7 +22,10 @@ class OrderTask(Base):
     
 sync_engine = create_engine(DSN)
 # OrderTask.__table__.drop(sync_engine)
-# OrderTask.__table__.create(sync_engine)
+
+
+def create_new_table():
+    OrderTask.__table__.create(sync_engine)
 
 
 def new_order(username: str, public_name: BigInteger, currency: str, time_is_AM: bool):
