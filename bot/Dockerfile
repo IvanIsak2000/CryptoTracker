@@ -1,11 +1,7 @@
 FROM python:3.10 
 
-WORKDIR /app
-
-
-ADD . /app
-ADD requirements.txt /app
-
+WORKDIR /bot
+ADD . /bot/
 
 RUN python3 -m venv /opt/venv
 RUN  pip install --upgrade pip
