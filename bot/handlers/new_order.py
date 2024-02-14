@@ -6,8 +6,6 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.types import ReplyKeyboardRemove
 from dataclasses import dataclass
-import logging
-
 from kbs.make_keyboard import make_keyboard
 from model import new_order
 
@@ -19,11 +17,9 @@ from handlers.constants import START_BUTTONS
 from handlers.constants import WHICH_CURRENCIES_TEXT
 from handlers.constants import WHAT_TIME_TEXT
 from handlers.constants import CONFIRM_OR_NOT_TEXT
-from handlers.constants import ORDER_WAS_CLEAR_TEXT
 
 router = Router()
 
-logging.basicConfig(level=logging.INFO)
 
 class OrderTracking(StatesGroup):
     SUPPORTED_CURRENCIES_choosed = State()
