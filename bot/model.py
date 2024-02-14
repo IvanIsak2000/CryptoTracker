@@ -8,6 +8,7 @@ from config import DSN
 
 Base = declarative_base()
 
+
 class OrderTask(Base):
     __tablename__ = "order_task"
 
@@ -21,20 +22,19 @@ class OrderTask(Base):
         return f"OrderTask(id={self.id!r}, username={self.username!r}, currency={self.currency!r},public_name ={self.public_name!r}, time_is_AM={self.time_is_AM!r})"
     
 sync_engine = create_engine(DSN)
-# OrderTask.__table__.drop(sync_engine)
 
 
-def new_order(username: str, public_name: BigInteger, currency: str, time_is_AM: bool):
+def new_order(username: str, public_name: BigInteger, currency: str, time_is_AM: bool) -> None:
     with Session(sync_engine) as session:
-        new_order = OrderTask(username=username, 
+        order = OrderTask(username=username,
                 public_name=public_name, 
                 currency=currency,
                 time_is_AM=time_is_AM)
-        session.add(new_order)
+        session.add(order)
         session.commit()
 
 
-def get_orders(public_name):
+def get_orders(public_name) -> list[dict]:
     orders = []
     with Session(sync_engine) as session:
         stmt = select(OrderTask).where(OrderTask.public_name==public_name)
@@ -44,7 +44,7 @@ def get_orders(public_name):
     return orders
 
 
-def remove_orders(public_name) -> str:
+def remove_orders(public_name) -> None:
     with Session(sync_engine) as session:
         stmt = delete(OrderTask).where(OrderTask.public_name==public_name)
         session.execute(stmt)
