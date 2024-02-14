@@ -121,6 +121,7 @@ Open **.env** file, paste and fill that data on your own.
   KEY=""
 
 3. Start docker-compose
+^^^^^^^^^^^^^^^^^^^^^^^^
 To build finally write that commands in terminal in main folder.
 
 :: 
