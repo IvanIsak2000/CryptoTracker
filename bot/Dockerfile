@@ -7,5 +7,4 @@ RUN python3 -m venv /opt/venv
 RUN  pip install --upgrade pip
 RUN . /opt/venv/bin/activate && pip install -r requirements.txt
 
-
 CMD . /opt/venv/bin/activate && exec python3 -u bot.py
