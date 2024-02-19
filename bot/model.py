@@ -3,6 +3,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import declarative_base, Session
 from sqlalchemy import create_engine
+# from data_from_api  
 
 from config import DSN
 
@@ -49,3 +50,12 @@ def remove_orders(public_name) -> None:
         stmt = delete(OrderTask).where(OrderTask.public_name==public_name)
         session.execute(stmt)
         session.commit()
+
+
+def get_targets_for_sending() -> list:
+    targets_list = []
+    with Session(sync_engine) as session:
+        stmt = select(OrderTask).where(OrderTask.time_is_AM==True)
+        for i in session.execute(stmt):
+            targets_list.append({'public_name':i.OrderTask.public_name, 'required_currency:':i.OrderTask.currency})
+    return targets_list

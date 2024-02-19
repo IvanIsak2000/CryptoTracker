@@ -1,24 +1,43 @@
 import logging
-from config import BOT_KEY
 import asyncio
 from aiogram import Bot, Dispatcher
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+import inspect
 
+from logger import logger
+from config import BOT_KEY
 from handlers import new_order 
 from handlers import main_handler
+from sending import message_sender
+
+bot = Bot(token=BOT_KEY)
+dp = Dispatcher()
 
 
-async def main():
-    bot = Bot(token=BOT_KEY)
-    dp = Dispatcher()
-    logging.basicConfig(level=logging.INFO)
-
+async def bot_task(bot: bot, dp: dp):
     dp.include_routers(
         new_order.router,
-        main_handler.router
+        main_handler.router,
     )
-
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
+
+async def sender_task(bot: bot):
+    logger.info(f'{inspect.currentframe()} got bot object')
+    scheduler = AsyncIOScheduler()
+    scheduler.add_job(message_sender, 'interval', seconds=10, args=[bot])
+    scheduler.start()
+ 
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    logger.info('Program was start')
+    try:
+        loop = asyncio.get_event_loop()
+        tasks = [
+            loop.create_task(bot_task(bot, dp)),
+            loop.create_task(sender_task(bot))
+        ]
+        loop.run_until_complete(asyncio.gather(*tasks))
+    except:
+        logger.info('Goodbye!')

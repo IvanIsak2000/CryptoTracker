@@ -31,4 +31,6 @@ Click Go button!
 WHICH_CURRENCIES_TEXT = "Which currencies you want to tracking?"
 WHAT_TIME_TEXT = "What time should I remind you?"
 CONFIRM_OR_NOT_TEXT = "Do you confirm?"
+ORDER_WAS_SET_TEXT = "Your order was set!"
 ORDER_WAS_CLEAR_TEXT = "Current order was clear!"
+ORDER_NOT_CREATED_TEXT = "Sorry, your order not created! Please try again!"

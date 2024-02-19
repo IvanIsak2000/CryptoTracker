@@ -2,6 +2,7 @@ from aiogram import Router, F
 from aiogram import types
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from kbs.make_keyboard import make_keyboard
 from model import get_orders, remove_orders
@@ -10,7 +11,6 @@ from handlers.constants import WELCOME_TEXT
 from handlers.constants import START_BUTTONS
 from handlers.constants import MODERATORS
 from handlers.constants import ORDER_WAS_CLEAR_TEXT
-
 
 router = Router()
 
@@ -51,4 +51,3 @@ async def clear_states(message: types.Message, state: FSMContext):
     await message.answer(
         text=ORDER_WAS_CLEAR_TEXT,
         reply_markup=make_keyboard(START_BUTTONS))
-    

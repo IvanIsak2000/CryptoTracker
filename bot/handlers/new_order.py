@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram import types
-from aiogram.filters import Command, StateFilter
+from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, ReplyKeyboardRemove
@@ -9,21 +9,28 @@ from dataclasses import dataclass
 from kbs.make_keyboard import make_keyboard
 from model import new_order
 
-from handlers.constants import SUPPORTED_CURRENCIES
-from handlers.constants import DAY_MODES
-from handlers.constants import CONSENT
-from handlers.constants import START_BUTTONS
+from handlers.constants import (
+    SUPPORTED_CURRENCIES,
+    DAY_MODES,
+    CONSENT,
+    START_BUTTONS
+    )
 
-from handlers.constants import WHICH_CURRENCIES_TEXT
-from handlers.constants import WHAT_TIME_TEXT
-from handlers.constants import CONFIRM_OR_NOT_TEXT
+from handlers.constants import (
+    WHICH_CURRENCIES_TEXT, 
+    WHAT_TIME_TEXT,
+    CONFIRM_OR_NOT_TEXT,
+    ORDER_WAS_SET_TEXT,
+    ORDER_NOT_CREATED_TEXT
+)
+
 
 router = Router()
 
 
 class OrderTracking(StatesGroup):
-    SUPPORTED_CURRENCIES_choosed = State()
-    time_choosed = State()
+    currency_selected = State()
+    time_selected = State()
     user_has_confirmed = State()
 
 
@@ -32,24 +39,24 @@ async def order_start(message: types.Message, state: FSMContext):
     await message.answer(
         text=WHICH_CURRENCIES_TEXT, 
         reply_markup=make_keyboard(SUPPORTED_CURRENCIES))
-    await state.set_state(OrderTracking.SUPPORTED_CURRENCIES_choosed)
+    await state.set_state(OrderTracking.currency_selected)
 
 
 @router.message(
-    OrderTracking.SUPPORTED_CURRENCIES_choosed,
+    OrderTracking.currency_selected,
     F.text.in_(SUPPORTED_CURRENCIES)
 )
 async def time_choosing(message: Message, state: FSMContext):
-    await state.update_data(choosen_currency=message.text)
+    await state.update_data(chosen_currency=message.text)
     await message.answer(
         text=WHAT_TIME_TEXT,
         reply_markup=make_keyboard(DAY_MODES)
     )
-    await state.set_state(OrderTracking.time_choosed)
+    await state.set_state(OrderTracking.time_selected)
 
 
 @router.message(
-    OrderTracking.time_choosed,
+    OrderTracking.time_selected,
     F.text.in_(DAY_MODES)
 )
 async def confirming(message: Message, state: FSMContext):
@@ -75,7 +82,7 @@ async def confirmation_of_data(message: Message, state: FSMContext):
     data = await state.get_data()
 
     user_order = UserOrder(
-        currency=data['choosen_currency'],
+        currency=data['chosen_currency'],
         time_=''.join([i for i in data['time'] if i.isdigit() or i.isalpha()]),
         confirm=True if data['confirm'] == 'Confirm' else False
     )
@@ -84,14 +91,15 @@ async def confirmation_of_data(message: Message, state: FSMContext):
         data = new_order(username=message.from_user.username, 
                   public_name=message.chat.id, 
                   currency=user_order.currency,
-                  time_is_AM=user_order.time_=='12AM' )
+                  time_is_AM=user_order.time_=='12AM' 
+                )
 
         await state.clear()
-        await message.answer(text=f'Your order was set!',
+        await message.answer(text=ORDER_WAS_SET_TEXT,
             reply_markup=ReplyKeyboardRemove())
 
     else:
         await state.clear()
         await message.answer(
-        text=f"Sorry, your order not created! Please try again!",
+        text=ORDER_NOT_CREATED_TEXT,
         reply_markup=make_keyboard(START_BUTTONS))
