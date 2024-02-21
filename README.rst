@@ -133,5 +133,5 @@ After a few time, your own docker multiple image will was build and run.
 
 About
 ---------
-- Main author: `IvanIsak2000 <https://github.com/IvanIsak2000>`_. Also known as Ivan Isakharov.
+- Main author: `IvanIsak2000 <https://github.com/IvanIsak2000>`_. Also known as Ivan Sakharov.
 - Tracking issue: You can see the current `issues <https://github.com/IvanIsak2000/CryptoTracker/issues/>`_  or create new issue `here <https://github.com/IvanIsak2000/CryptoTracker/issues/new>`_.
