@@ -1,20 +1,22 @@
 import asyncio
-from model import get_targets_for_sending
 from pydantic import BaseModel
 import aiogram
-from logger import logger
+from aiogram.utils.text_decorations import html_decoration as hd
 
+from logger import logger
+from model import get_targets_for_sending
 
 async def message_sender(bot: aiogram.client.bot.Bot):
-    chat_id=5261974343
-    await bot.send_message(chat_id=chat_id, text='Your data')
-    logger.info('Data was send')
-#     class User(BaseModel):
-#         id: int
-#         query_currency: str
-#         currency_amount: float
+    targets = get_targets_for_sending()
+    fake_data = {'Polygon':10}
+    completed = 0 
+    for target in targets:
+        try:
+            await bot.send_message(chat_id=target.id,text=str(fake_data[target.request_currency]))
+            completed += 1 
+        except KeyError:
+            pass
+        except Exception as e :
+            logger.error(e)
 
-
-#     for target in targets:
-#         user = User(id=target.id, query_currency=target.currency, currency_amount=target.amount )
-#         await bot.send_message(chat_id=user.id, text=user.query_currency+user.currency_amount) 
+    logger.info(f'Orders[{completed}/{len(targets)}] was complied')
