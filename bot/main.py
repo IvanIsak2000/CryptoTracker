@@ -4,11 +4,11 @@ from aiogram import Bot, Dispatcher
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import inspect
 
-from logger import logger
-from config import BOT_KEY
+from utils.logger import logger
+from utils.config import BOT_KEY
 from handlers import new_order 
 from handlers import main_handler
-from sending import message_sender
+from utils.sending import message_sender
 
 bot = Bot(token=BOT_KEY)
 dp = Dispatcher()
@@ -26,7 +26,7 @@ async def bot_task(bot: bot, dp: dp):
 async def sender_task(bot: bot):
     logger.info(f'{inspect.currentframe()} got bot object')
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(message_sender, 'interval', seconds=600, args=[bot])
+    scheduler.add_job(message_sender, 'interval', seconds=5, args=[bot])
     scheduler.start()
  
 
