@@ -24,3 +24,4 @@ sqlmodel==0.0.14
 typing_extensions==4.9.0
 urllib3==2.2.0
 yarl==1.9.4
+apscheduler==3.10.4
