@@ -6,8 +6,9 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.types import ReplyKeyboardRemove
 from dataclasses import dataclass
+
 from kbs.make_keyboard import make_keyboard
-from model import new_order
+from utils.model import new_order
 
 from handlers.constants import (
     SUPPORTED_CURRENCIES,

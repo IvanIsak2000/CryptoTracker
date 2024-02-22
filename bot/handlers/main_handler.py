@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from kbs.make_keyboard import make_keyboard
-from model import get_orders, remove_orders
+from utils.model import get_orders, remove_orders
 
 from handlers.constants import WELCOME_TEXT
 from handlers.constants import START_BUTTONS
