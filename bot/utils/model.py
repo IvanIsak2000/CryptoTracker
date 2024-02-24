@@ -59,10 +59,10 @@ def get_targets_for_sending() -> list:
         id: int
         request_currency: str
     
-    targets_list = []
+    targets = []
     with Session(sync_engine) as session:
         stmt = select(OrderTask).where(OrderTask.time_is_AM==True)
         for i in session.execute(stmt):
             t = Target(id=i.OrderTask.public_name, request_currency=i.OrderTask.currency)
-            targets_list.append(t)
-    return targets_list
+            targets.append(t)
+    return targets
