@@ -18,11 +18,11 @@ from handlers.constants import (
     )
 
 from handlers.constants import (
-    WHICH_CURRENCIES_TEXT, 
-    WHAT_TIME_TEXT,
-    CONFIRM_OR_NOT_TEXT,
-    ORDER_WAS_SET_TEXT,
-    ORDER_NOT_CREATED_TEXT
+    TEXT_WHICH_CURRENCIES, 
+    TEXT_WHAT_TIME,
+    TEXT_CONFIRM_OR_NOT,
+    TEXT_ORDER_WAS_SET,
+    TEXT_ORDER_NOT_CREATED
 )
 
 
@@ -38,7 +38,7 @@ class OrderTracking(StatesGroup):
 @router.message(StateFilter(None), F.text=='Go')
 async def order_start(message: types.Message, state: FSMContext):
     await message.answer(
-        text=WHICH_CURRENCIES_TEXT, 
+        text=TEXT_WHICH_CURRENCIES, 
         reply_markup=make_keyboard(SUPPORTED_CURRENCIES))
     await state.set_state(OrderTracking.currency_selected)
 
@@ -50,7 +50,7 @@ async def order_start(message: types.Message, state: FSMContext):
 async def time_choosing(message: Message, state: FSMContext):
     await state.update_data(chosen_currency=message.text)
     await message.answer(
-        text=WHAT_TIME_TEXT,
+        text=TEXT_WHAT_TIME,
         reply_markup=make_keyboard(DAY_MODES)
     )
     await state.set_state(OrderTracking.time_selected)
@@ -63,7 +63,7 @@ async def time_choosing(message: Message, state: FSMContext):
 async def confirming(message: Message, state: FSMContext):
     await state.update_data(time=message.text)
     await message.answer(
-        text=CONFIRM_OR_NOT_TEXT,
+        text=TEXT_CONFIRM_OR_NOT,
         reply_markup=make_keyboard(CONSENT)
     )
     await state.set_state(OrderTracking.user_has_confirmed)
@@ -96,11 +96,11 @@ async def confirmation_of_data(message: Message, state: FSMContext):
                 )
 
         await state.clear()
-        await message.answer(text=ORDER_WAS_SET_TEXT,
+        await message.answer(text=TEXT_ORDER_WAS_SET,
             reply_markup=ReplyKeyboardRemove())
 
     else:
         await state.clear()
         await message.answer(
-        text=ORDER_NOT_CREATED_TEXT,
+        text=TEXT_ORDER_NOT_CREATED,
         reply_markup=make_keyboard(START_BUTTONS))
