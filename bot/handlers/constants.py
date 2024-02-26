@@ -20,7 +20,7 @@ CONSENT = ["Confirm", "I do not confirm"]
 
 
 # "Text for send to user"
-WELCOME_TEXT = """
+TEXT_WELCOME = """
 Hello!
 I am the modern bot for tracking cryptocurrencies. I can:
 - tracking the cryptocurrencies
@@ -28,9 +28,11 @@ I am the modern bot for tracking cryptocurrencies. I can:
 
 Click Go button!
 """
-WHICH_CURRENCIES_TEXT = "Which currencies you want to tracking?"
-WHAT_TIME_TEXT = "What time should I remind you?"
-CONFIRM_OR_NOT_TEXT = "Do you confirm?"
-ORDER_WAS_SET_TEXT = "Your order was set!"
-ORDER_WAS_CLEAR_TEXT = "Current order was clear!"
-ORDER_NOT_CREATED_TEXT = "Sorry, your order not created! Please try again!"
+TEXT_WHICH_CURRENCIES = "Which currencies you want to tracking?"
+TEXT_WHAT_TIME = "What time should I remind you?"
+TEXT_CONFIRM_OR_NOT = "Do you confirm?"
+TEXT_ORDER_WAS_SET = "Your order was set!"
+TEXT_ORDER_WAS_CLEAR = "Current order was clear!"
+TEXT_ORDER_NOT_CREATED = "Sorry, your order not created! Please try again!"
+TEXT_ONE_ORDER_HAS_BEEN_DELETED = "Done, your order has been deleted!"
+TEXT_ALL_ORDERS_HAS_BEEN_DELETED = "All your orders has been deleted!"
