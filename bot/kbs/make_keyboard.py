@@ -1,7 +1,4 @@
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
-from aiogram import Router
-from aiogram.filters import Command
-from aiogram.types import Message
 from aiogram import types
 
 def make_keyboard(items):
