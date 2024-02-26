@@ -38,4 +38,4 @@ if __name__ == "__main__":
         loop.create_task(sender_task(bot))
     ]
     loop.run_until_complete(asyncio.gather(*tasks))
-    logger.info('Goodbye!\n---------------------------------------')
+    logger.info('Stop program\n---------------------------------------')
