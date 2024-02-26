@@ -46,6 +46,13 @@ def get_orders(public_name) -> list[dict]:
     return orders
 
 
+def remove_one_order(public_name: int, currency: str) -> None:
+    with Session(sync_engine) as session:
+        stmt = delete(OrderTask).where(OrderTask.public_name==public_name, OrderTask.currency==currency)
+        session.execute(stmt)
+        session.commit()
+
+
 def remove_orders(public_name) -> None:
     with Session(sync_engine) as session:
         stmt = delete(OrderTask).where(OrderTask.public_name==public_name)
