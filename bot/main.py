@@ -15,6 +15,7 @@ dp = Dispatcher()
 
 
 async def bot_task(bot: bot, dp: dp):
+    logger.info('bot_task started')
     dp.include_routers(
         new_order.router,
         main_handler.router,
@@ -24,12 +25,12 @@ async def bot_task(bot: bot, dp: dp):
 
 
 async def sender_task(bot: bot):
+    logger.info('sender_task started')
     logger.info(f'{inspect.currentframe()} got bot object')
     scheduler = AsyncIOScheduler()
     scheduler.add_job(message_sender, 'interval', seconds=5, args=[bot])
     scheduler.start()
  
-
 if __name__ == "__main__":
     logger.info('Program was start')
     loop = asyncio.get_event_loop()
