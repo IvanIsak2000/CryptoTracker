@@ -1,16 +1,22 @@
-from datetime import datetime
-import os
 import logging
+import os
+from logging.handlers import RotatingFileHandler
+import datetime
 
-currency_path_log_folder = f'log/{datetime.now().year}/{datetime.now().month}'
+current_year = datetime.datetime.now().year
+current_month = datetime.datetime.now().strftime("%B")
+log_dir = f"log/{current_year}/{current_month}"
+os.makedirs(log_dir, exist_ok=True)
 
-if not os.path.exists(currency_path_log_folder):
-    os.makedirs(currency_path_log_folder)
+logger = logging.getLogger('logger')
+logger.setLevel(logging.INFO)
 
-logging.basicConfig(level=logging.INFO)
-logging.basicConfig(filename=f'{currency_path_log_folder}/{datetime.now().day}.txt')
-logging.Formatter(fmt=' %(name)s : %(levelname)-8s : %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+
+log_file = f"{log_dir}/logfile_{datetime.datetime.now().day}.log"
+file_handler = RotatingFileHandler(log_file, mode='a', maxBytes=1e6, backupCount=5)
+file_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
 logging.getLogger('apscheduler.scheduler',).propagate = False
 logging.getLogger('apscheduler.executors.default' ).propagate = False
-
-logger = logging
